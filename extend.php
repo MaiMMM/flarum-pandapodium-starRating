@@ -12,6 +12,8 @@
 namespace Maimmm\Starrating;
 
 use Flarum\Extend;
+use Illuminate\Contracts\Events\Dispatcher;
+use Kilowhat\Ratings\Policies\PostPolicy;
 
 return [
     (new Extend\Frontend('forum'))
@@ -21,4 +23,8 @@ return [
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/less/admin.less'),
     new Extend\Locales(__DIR__.'/locale'),
+
+    function (Dispatcher $events) {
+        $events->subscribe(PostPolicy::class);
+    },
 ];

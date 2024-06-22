@@ -17,4 +17,11 @@ class SaveRating implements ExtenderInterface
     {
         $container['events']->listen(Saving::class, [$this, 'saveRating']);
     } 
+
+    public function saving(Saving $event)
+    {
+        $attributes = Arr::get($event->data, 'attributes', []);
+
+        
+    }
 }
