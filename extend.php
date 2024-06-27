@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Maimmm\Starrating;
+namespace maimmm\starRating;
 
 use Flarum\Extend;
 use Illuminate\Contracts\Events\Dispatcher;
-use Kilowhat\Ratings\Policies\PostPolicy;
 
 return [
     (new Extend\Frontend('forum'))
@@ -24,7 +23,5 @@ return [
         ->css(__DIR__.'/less/admin.less'),
     new Extend\Locales(__DIR__.'/locale'),
 
-    function (Dispatcher $events) {
-        $events->subscribe(PostPolicy::class);
-    },
 ];
+  
