@@ -23,5 +23,8 @@ return [
         ->css(__DIR__.'/less/admin.less'),
     new Extend\Locales(__DIR__.'/locale'),
 
+    // (new Extend\Routes('api'))
+    //     ->post('', 'f', Api\Controller\starrating::class),
+
 ];
   
