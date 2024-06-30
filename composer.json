@@ -1,6 +1,6 @@
 {
-    "name": "maimmm/flarum-ext-starrating",
-    "description": "none",
+    "name": "maimmm/starRating",
+    "description": "Give star rating to your posts",
     "keywords": [
         "flarum"
     ],
