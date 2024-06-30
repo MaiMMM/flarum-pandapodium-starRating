@@ -22,6 +22,9 @@ use Flarum\Api\Event\WillGetData;
 use Flarum\Api\Controller\ListDiscussionsController;
 // use Flarum\starRating\Api\LoadRatingRelationship;
 use Flarum\User\User;
+use Flarum\Post\Event\Deleted;
+use Flarum\Post\Event\Saving;
+// use Flarum\maimmm\starRating\Listener\SaveRatingToDataBase;
 
 return [
     (new Extend\Frontend('forum'))
@@ -35,21 +38,23 @@ return [
     // create a new model for maimmm_rating for flarum_db.posts
     // find relationships here (https://docs.flarum.org/extend/models#relationships)
     (new Extend\Model(Post::class))
-        ->cast('maimmm_rating', 'integer')
-        ->relationship('maimmm_rating', function ($model) {
-            return $model->hasOne(Post::class, 'maimmm_rating');
-        }),
-
-    (new Extend\ApiController(Controller\CreatePostController::class))
-        ->addInclude('maimmm_rating'),
-
+        ->cast('maimmm_rating', 'integer'),
 
     // extend PostSerializer to include maimmm_rating
+    (new Extend\ApiSerializer(PostSerializer::class))
+        ->attribute('maimmm_rating', function ($serializer, $model) {
+            return (int) $model->maimmm_rating;
+        }),
 
-    // (new Extend\ApiSerializer(PostSerializer::class))
-    //     ->attribute('maimmm_rating', function ($serializer, $model) {
-    //         return (int) $model->maimmm_rating;
-    //     }),
+    (new Extend\Event())
+        ->listen(Saving::class, function (Saving $event) {
+            $data = $event->data;
+            $post = $event->post;
+
+            if (isset($data['attributes']['maimmm_rating'])) {
+                $post->maimmm_rating = $data['attributes']['maimmm_rating'];
+            }
+        }),
 
     // create a new api controller for maimmm_rating
     // (new Extend\ApiController())

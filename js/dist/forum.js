@@ -38,6 +38,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+// modified from https://github.com/kilowhat/flarum-ext-ratings/blob/master/js/src/forum/components/Stars.js
 var Stars = /*#__PURE__*/function (_Component) {
   function Stars() {
     return _Component.apply(this, arguments) || this;
@@ -46,11 +48,22 @@ var Stars = /*#__PURE__*/function (_Component) {
   var _proto = Stars.prototype;
   _proto.view = function view() {
     var _this = this;
-    return m('.Stars', {
+    return m('.Stars',
+    // Attributes passed to components are available throughout the class via this.attrs.
+    {
       className: this.attrs.editable ? 'editable' : ''
     }, [1, 2, 3, 4, 5].map(function (rating) {
-      var active = _this.attrs.value >= rating;
-      return flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2___default()("fa" + (active ? 's' : 'r') + " fa-star", {
+      var stars = _this.attrs.value;
+      var active = stars + 0.29 >= rating;
+      var isHalf = rating - stars >= 0.39 && rating - stars < 0.71;
+
+      // console.log(isHalf)
+      // rating might be a float
+      // if difference is 0-0.3, show same number of star
+      // if difference is 0.4-0.6, show half star
+      // if difference is 0.7-1, show next star
+
+      return flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2___default()("fa" + (active || isHalf ? 's' : 'r') + " fa-star" + (isHalf ? '-half-alt' : ''), {
         onclick: function onclick() {
           // if not editable, do nothing
           if (!_this.attrs.editable) {
@@ -94,6 +107,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var flarum_forum_components_CommentPost__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! flarum/forum/components/CommentPost */ "flarum/forum/components/CommentPost");
 /* harmony import */ var flarum_forum_components_CommentPost__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_CommentPost__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! flarum/forum/components/DiscussionHero */ "flarum/forum/components/DiscussionHero");
+/* harmony import */ var flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7__);
+
 
 
 
@@ -105,13 +121,6 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
   console.log('[maimmm/flarum-ext-starrating] Hello, forum!');
 
   // -------------------------------------------------------------------------
-  // HEADER
-  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_HeaderPrimary__WEBPACK_IMPORTED_MODULE_3___default().prototype), 'items', function (items) {
-    items.add('google', m("a", {
-      href: "https://google.com"
-    }, "Google"));
-  });
-
   // init
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'init', function () {
     this.rating = 0;
@@ -135,14 +144,37 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
   // -------------------------------------------------------------------------
   // COMMENT
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_CommentPost__WEBPACK_IMPORTED_MODULE_6___default().prototype), 'headerItems', function (items) {
-    items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
-      value: 3,
-      editable: false
-      // onchange: value => {
-      //   this.attrs.post.save({rating: value});
-      // }
-    }));
+    var rating = this.attrs.post.attribute('maimmm_rating');
+    if (rating) {
+      items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
+        value: rating,
+        editable: false
+      }));
+    }
   });
+});
+
+// -------------------------------------------------------------------------
+// HEADER
+(0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7___default().prototype), 'items', function (items) {
+  var _this2 = this;
+  // console.log(this)
+  var rating = 0;
+  var posts = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().store.all('posts').filter(function (post) {
+    return post.discussion() === _this2.attrs.discussion;
+  });
+
+  // add each post's data.attributes.maimmm_rating to rating and then divide by the number of posts
+  posts.forEach(function (post) {
+    rating += post.data.attributes.maimmm_rating;
+  });
+  rating = rating / posts.length;
+  console.log(rating);
+  if (rating) {
+    items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
+      value: rating
+    }));
+  }
 });
 
 /***/ }),
@@ -210,6 +242,17 @@ module.exports = flarum.core.compat['forum/app'];
 
 "use strict";
 module.exports = flarum.core.compat['forum/components/CommentPost'];
+
+/***/ }),
+
+/***/ "flarum/forum/components/DiscussionHero":
+/*!************************************************************************!*\
+  !*** external "flarum.core.compat['forum/components/DiscussionHero']" ***!
+  \************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['forum/components/DiscussionHero'];
 
 /***/ }),
 
