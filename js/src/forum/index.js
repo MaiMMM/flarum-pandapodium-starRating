@@ -34,7 +34,7 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
 
   // data
   extend(ReplyComposer.prototype, 'data', function(data) {
-    data.rating = this.rating;
+    data.maimmm_rating = this.rating;
   });
 
   // -------------------------------------------------------------------------

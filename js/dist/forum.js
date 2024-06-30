@@ -129,7 +129,7 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
 
   // data
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'data', function (data) {
-    data.rating = this.rating;
+    data.maimmm_rating = this.rating;
   });
 
   // -------------------------------------------------------------------------
