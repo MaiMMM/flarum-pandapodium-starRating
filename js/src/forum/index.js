@@ -57,12 +57,15 @@ extend(DiscussionHero.prototype, 'items', function (items) {
   // console.log(this)
   let rating = 0;
   const posts = app.store.all('posts').filter(post => post.discussion() === this.attrs.discussion);
-  
+  let numOfZeroStarPost = 0;
   // add each post's data.attributes.maimmm_rating to rating and then divide by the number of posts
   posts.forEach(post => {
+    if(post.data.attributes.maimmm_rating === 0){
+      numOfZeroStarPost++;
+    }
     rating += post.data.attributes.maimmm_rating;
   });
-  rating = rating / posts.length;
+  rating = rating / (posts.length - numOfZeroStarPost);
 
   console.log(rating)
   if (rating) {

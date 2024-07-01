@@ -163,12 +163,15 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
   var posts = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().store.all('posts').filter(function (post) {
     return post.discussion() === _this2.attrs.discussion;
   });
-
+  var numOfZeroStarPost = 0;
   // add each post's data.attributes.maimmm_rating to rating and then divide by the number of posts
   posts.forEach(function (post) {
+    if (post.data.attributes.maimmm_rating === 0) {
+      numOfZeroStarPost++;
+    }
     rating += post.data.attributes.maimmm_rating;
   });
-  rating = rating / posts.length;
+  rating = rating / (posts.length - numOfZeroStarPost);
   console.log(rating);
   if (rating) {
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
