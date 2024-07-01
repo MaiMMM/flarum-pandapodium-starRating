@@ -172,7 +172,8 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
     rating += post.data.attributes.maimmm_rating;
   });
   rating = rating / (posts.length - numOfZeroStarPost);
-  console.log(rating);
+
+  // console.log(rating)
   if (rating) {
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
       value: rating

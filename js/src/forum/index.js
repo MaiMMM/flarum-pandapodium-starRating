@@ -67,7 +67,7 @@ extend(DiscussionHero.prototype, 'items', function (items) {
   });
   rating = rating / (posts.length - numOfZeroStarPost);
 
-  console.log(rating)
+  // console.log(rating)
   if (rating) {
       items.add('stars', Stars.component({
           value: rating,
