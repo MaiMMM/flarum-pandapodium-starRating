@@ -49,35 +49,44 @@ var Stars = /*#__PURE__*/function (_Component) {
   }
   (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(Stars, _Component);
   var _proto = Stars.prototype;
+  _proto.oninit = function oninit(vnode) {
+    _Component.prototype.oninit.call(this, vnode);
+    this.tooltip = null; // Initialize a reference for Tooltip
+  };
   _proto.view = function view() {
     var _this = this;
     return m('.Stars',
     // hoverToViewValueTooltip(optional): whether to show a tooltip when hovering over the stars to show the value
+    m((flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_3___default()), {
+      text: this.attrs.hoverToViewValueTooltip ? this.attrs.value.toFixed(2) : '',
+      position: 'bottom',
+      onupdate: function onupdate(vnode) {
+        // console.log(vnode)
 
+        // if the value of the stars has changed, recreate the tooltip
+        vnode.state.shouldRecreateTooltip = true;
+      }
+    }, m('.Stars',
     // Attributes passed to components are available throughout the class via this.attrs.
-
     // editable: whether the stars are clickable
     // size(optional): 'small' to make the stars smaller
     {
-      className: "\n            " + (this.attrs.editable ? 'editable' : '') + "  \n            " + (this.attrs.size === 'small' ? 'smallStar' : '')
+      className: "\n                " + (this.attrs.editable ? 'editable' : '') + "  \n                " + (this.attrs.size === 'small' ? 'smallStar' : '')
     }, [1, 2, 3, 4, 5].map(function (rating) {
       var stars = _this.attrs.value;
       var active = stars + 0.29 >= rating;
       var isHalf = rating - stars >= 0.39 && rating - stars < 0.71;
-
       // console.log(isHalf)
       // rating might be a float
       // if difference is 0-0.3, show same number of star
       // if difference is 0.4-0.6, show half star
       // if difference is 0.7-1, show next star
-
       return flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2___default()("fa" + (active || isHalf ? 's' : 'r') + " fa-star" + (isHalf ? '-half-alt' : ''), {
         onclick: function onclick() {
           // if not editable, do nothing
           if (!_this.attrs.editable) {
             return;
           }
-
           // if click on the same star, set value to 0
           if (_this.attrs.value === rating) {
             _this.attrs.onchange(0);
@@ -86,7 +95,7 @@ var Stars = /*#__PURE__*/function (_Component) {
           }
         }
       });
-    }));
+    }))));
   };
   return Stars;
 }((flarum_Component__WEBPACK_IMPORTED_MODULE_1___default()));
