@@ -35,6 +35,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_Component__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_Component__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/helpers/icon */ "flarum/helpers/icon");
 /* harmony import */ var flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_helpers_icon__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/components/Tooltip */ "flarum/common/components/Tooltip");
+/* harmony import */ var flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -49,9 +52,14 @@ var Stars = /*#__PURE__*/function (_Component) {
   _proto.view = function view() {
     var _this = this;
     return m('.Stars',
+    // hoverToViewValueTooltip(optional): whether to show a tooltip when hovering over the stars to show the value
+
     // Attributes passed to components are available throughout the class via this.attrs.
+
+    // editable: whether the stars are clickable
+    // size(optional): 'small' to make the stars smaller
     {
-      className: this.attrs.editable ? 'editable' : ''
+      className: "\n            " + (this.attrs.editable ? 'editable' : '') + "  \n            " + (this.attrs.size === 'small' ? 'smallStar' : '')
     }, [1, 2, 3, 4, 5].map(function (rating) {
       var stars = _this.attrs.value;
       var active = stars + 0.29 >= rating;
@@ -148,7 +156,8 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
     if (rating) {
       items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
         value: rating,
-        editable: false
+        editable: false,
+        size: 'small'
       }));
     }
   });
@@ -176,7 +185,8 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
   // console.log(rating)
   if (rating) {
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
-      value: rating
+      value: rating,
+      hoverToViewValueTooltip: true
     }));
   }
 });
@@ -202,6 +212,17 @@ module.exports = flarum.core.compat['Component'];
 
 "use strict";
 module.exports = flarum.core.compat['common/app'];
+
+/***/ }),
+
+/***/ "flarum/common/components/Tooltip":
+/*!******************************************************************!*\
+  !*** external "flarum.core.compat['common/components/Tooltip']" ***!
+  \******************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/components/Tooltip'];
 
 /***/ }),
 
