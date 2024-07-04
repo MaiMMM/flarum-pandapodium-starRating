@@ -52,9 +52,9 @@ export default class Stars extends Component {
                         if(!this.attrs.editable) {return;}
                         // if click on the same star, set value to 0
                         if(this.attrs.value === rating) {
-                        this.attrs.onchange(0);
+                            this.attrs.onchange(0);
                         } else {
-                        this.attrs.onchange(rating);
+                            this.attrs.onchange(rating);
                         }
                         }}
                     )

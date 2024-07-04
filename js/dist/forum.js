@@ -138,13 +138,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm/flarum-ext-starrating', function () {
-  console.log('[maimmm/flarum-ext-starrating] Hello, forum!');
-
   // -------------------------------------------------------------------------
-  // init
-  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'init', function () {
-    this.rating = 0;
-  });
+  // extend(ReplyComposer, 'initAttrs', function (_nothing, attrs) {
+  //   attrs.rating = 3;
+  // });
+
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'headerItems', function (items) {
     var _this = this;
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
@@ -176,14 +174,13 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
 
   // -------------------------------------------------------------------------
   // EDIT COMPOSER
-
-  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default().prototype), 'init', function () {
-    this.rating = 3;
-  });
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default().prototype), 'headerItems', function (items) {
     var _this2 = this;
+    // let rating = this.attrs.post.data.attributes.maimmm_rating;
+
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
-      value: this.rating,
+      // if this.rating exists set to this.rating, else set to rating to this.attrs.post.data.attributes.maimmm_rating
+      value: this.rating ? this.rating : this.attrs.post.data.attributes.maimmm_rating,
       onchange: function onchange(value) {
         _this2.rating = value;
       },

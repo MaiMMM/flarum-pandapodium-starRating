@@ -9,13 +9,10 @@ import DiscussionHero from 'flarum/forum/components/DiscussionHero';
 import EditPostComposer from 'flarum/forum/components/EditPostComposer';
 
 app.initializers.add('maimmm/flarum-ext-starrating', () => {
-  console.log('[maimmm/flarum-ext-starrating] Hello, forum!');
-
   // -------------------------------------------------------------------------
-  // init
-  extend(ReplyComposer.prototype, 'init', function() {
-    this.rating = 0;
-  });
+  // extend(ReplyComposer, 'initAttrs', function (_nothing, attrs) {
+  //   attrs.rating = 3;
+  // });
 
   extend(ReplyComposer.prototype, 'headerItems', function (items) {
     items.add('stars', Stars.component(
@@ -52,15 +49,13 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
 
   // -------------------------------------------------------------------------
   // EDIT COMPOSER
-
-  extend(EditPostComposer.prototype, 'init', function() {
-    this.rating = 3;
-  });
-
   extend(EditPostComposer.prototype, 'headerItems', function(items) {
+      // let rating = this.attrs.post.data.attributes.maimmm_rating;
+      
       items.add('stars', Stars.component(
         {
-          value: this.rating,
+          // if this.rating exists set to this.rating, else set to rating to this.attrs.post.data.attributes.maimmm_rating
+          value: this.rating ? this.rating : this.attrs.post.data.attributes.maimmm_rating,
           onchange: value => {
             this.rating = value;
           },
