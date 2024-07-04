@@ -6,6 +6,7 @@ import Stars from './components/Stars';
 import ReplyComposer from 'flarum/forum/components/ReplyComposer';
 import CommentPost from 'flarum/forum/components/CommentPost';
 import DiscussionHero from 'flarum/forum/components/DiscussionHero';
+import EditPostComposer from 'flarum/forum/components/EditPostComposer';
 
 app.initializers.add('maimmm/flarum-ext-starrating', () => {
   console.log('[maimmm/flarum-ext-starrating] Hello, forum!');
@@ -49,6 +50,30 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
     }
   });
 
+  // -------------------------------------------------------------------------
+  // EDIT COMPOSER
+
+  extend(EditPostComposer.prototype, 'init', function() {
+    this.rating = 3;
+  });
+
+  extend(EditPostComposer.prototype, 'headerItems', function(items) {
+      items.add('stars', Stars.component(
+        {
+          value: this.rating,
+          onchange: value => {
+            this.rating = value;
+          },
+          editable:true,
+        }
+      ));
+    }
+  );
+
+  extend(EditPostComposer.prototype, 'data', function(data) {
+    data.maimmm_rating = this.rating;
+  });
+
 });
 
 
@@ -78,3 +103,4 @@ extend(DiscussionHero.prototype, 'items', function (items) {
       }));
   }
 });
+

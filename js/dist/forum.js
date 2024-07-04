@@ -71,7 +71,7 @@ var Stars = /*#__PURE__*/function (_Component) {
     // editable: whether the stars are clickable
     // size(optional): 'small' to make the stars smaller
     {
-      className: "\n                " + (this.attrs.editable ? 'editable' : '') + "  \n                " + (this.attrs.size === 'small' ? 'smallStar' : '')
+      className: "\n                    " + (this.attrs.editable ? 'editable' : '') + "  \n                    " + (this.attrs.size === 'small' ? 'smallStar' : '')
     }, [1, 2, 3, 4, 5].map(function (rating) {
       var stars = _this.attrs.value;
       var active = stars + 0.29 >= rating;
@@ -126,6 +126,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_forum_components_CommentPost__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_CommentPost__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! flarum/forum/components/DiscussionHero */ "flarum/forum/components/DiscussionHero");
 /* harmony import */ var flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! flarum/forum/components/EditPostComposer */ "flarum/forum/components/EditPostComposer");
+/* harmony import */ var flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8__);
+
 
 
 
@@ -170,16 +173,36 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
       }));
     }
   });
+
+  // -------------------------------------------------------------------------
+  // EDIT COMPOSER
+
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default().prototype), 'init', function () {
+    this.rating = 3;
+  });
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default().prototype), 'headerItems', function (items) {
+    var _this2 = this;
+    items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
+      value: this.rating,
+      onchange: function onchange(value) {
+        _this2.rating = value;
+      },
+      editable: true
+    }));
+  });
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default().prototype), 'data', function (data) {
+    data.maimmm_rating = this.rating;
+  });
 });
 
 // -------------------------------------------------------------------------
 // HEADER
 (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7___default().prototype), 'items', function (items) {
-  var _this2 = this;
+  var _this3 = this;
   // console.log(this)
   var rating = 0;
   var posts = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().store.all('posts').filter(function (post) {
-    return post.discussion() === _this2.attrs.discussion;
+    return post.discussion() === _this3.attrs.discussion;
   });
   var numOfZeroStarPost = 0;
   // add each post's data.attributes.maimmm_rating to rating and then divide by the number of posts
@@ -287,6 +310,17 @@ module.exports = flarum.core.compat['forum/components/CommentPost'];
 
 "use strict";
 module.exports = flarum.core.compat['forum/components/DiscussionHero'];
+
+/***/ }),
+
+/***/ "flarum/forum/components/EditPostComposer":
+/*!**************************************************************************!*\
+  !*** external "flarum.core.compat['forum/components/EditPostComposer']" ***!
+  \**************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['forum/components/EditPostComposer'];
 
 /***/ }),
 
