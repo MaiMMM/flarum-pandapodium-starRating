@@ -13,8 +13,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var flarum_admin_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/admin/app */ "flarum/admin/app");
 /* harmony import */ var flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_admin_app__WEBPACK_IMPORTED_MODULE_0__);
 
-flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm/flarum-ext-starrating', function () {
-  console.log('[maimmm/flarum-ext-starrating] Hello, admin!');
+flarum_admin_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm-star-rating', function (app) {
+  app.extensionData["for"]('maimmm-star-rating').registerSetting({
+    setting: 'maimmm-star-rating.tag',
+    // This is the key the settings will be saved under in the settings table in the database.
+    label: app.translator.trans('Tags to include(leave empty to make this feature global)'),
+    // The label to be shown letting the admin know what the setting does.
+    help: app.translator.trans('This feature will be available tags entered below'),
+    // Optional help text where a longer explanation of the setting can go.
+    placeholder: 'example: tag1 tag2 tag3',
+    type: 'text',
+    // What type of setting this is, valid options are: boolean, text (or any other <input> tag type), and select. 
+    tagScoped: true // Whether or not this setting should be saved on a per-tag basis.
+  });
 });
 
 /***/ }),

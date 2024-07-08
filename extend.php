@@ -56,6 +56,8 @@ return [
             }
         }),
 
+    (new Extend\Settings())
+        ->default('maimmm-star-rating.tag',true)
     // create a new api controller for maimmm_rating
     // (new Extend\ApiController())
 ];

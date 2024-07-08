@@ -145,13 +145,19 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
 
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'headerItems', function (items) {
     var _this = this;
-    items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
-      value: this.rating,
-      onchange: function onchange(value) {
-        _this.rating = value;
-      },
-      editable: true
-    }));
+    console.log(this);
+    // attrs.composer.body.attrs.discussion.payload.included[3].attributes.name
+
+    // only show stars if the tag is Product Discussion
+    if (this.attrs.discussion.payload.included[3].attributes.name === 'Product Discussion') {
+      items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
+        value: this.rating,
+        onchange: function onchange(value) {
+          _this.rating = value;
+        },
+        editable: true
+      }));
+    }
   });
 
   // data

@@ -26,9 +26,9 @@
             "title": "Flarum-ext-starrating",
             "category": "",
             "icon": {
-                "name": "",
-                "color": "",
-                "backgroundColor": ""
+                "name": "far fa-star",
+                "color": "#fff",
+                "backgroundColor": "#ff94ef"
             }
         },
         "flarum-cli": {

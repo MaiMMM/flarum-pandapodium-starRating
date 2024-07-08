@@ -15,15 +15,22 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
   // });
 
   extend(ReplyComposer.prototype, 'headerItems', function (items) {
-    items.add('stars', Stars.component(
-      {
-        value: this.rating,
-        onchange: value => {
-          this.rating = value;
-        },
-        editable:true,
-      }
-    ));
+    console.log(this)
+    // attrs.composer.body.attrs.discussion.payload.included[3].attributes.name
+    
+    // only show stars if the tag is Product Discussion
+    if(this.attrs.discussion.payload.included[3].attributes.name === 'Product Discussion'){   
+
+      items.add('stars', Stars.component(
+        {
+          value: this.rating,
+          onchange: value => {
+            this.rating = value;
+          },
+          editable:true,
+        }
+      ));
+    }
   });
 
   // data
