@@ -15,6 +15,10 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
   // });
 
   extend(ReplyComposer.prototype, 'headerItems', function (items) {
+
+    // TO DO:
+    // THIS PART IS NOT WORKING, it needs to be replaced by some backend magic linked with extension settings
+    // ----------------------------------------------------------
     let isProductDiscussion = false;
 
     if(this.attrs.discussion.payload.included){
@@ -24,6 +28,8 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
         }
       });
     }
+
+    // ----------------------------------------------------------
     if(isProductDiscussion){   
 
       items.add('stars', Stars.component(

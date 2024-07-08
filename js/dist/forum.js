@@ -145,6 +145,9 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
 
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'headerItems', function (items) {
     var _this = this;
+    // TO DO:
+    // THIS PART IS NOT WORKING, it needs to be replaced by some backend magic linked with extension settings
+    // ----------------------------------------------------------
     var isProductDiscussion = false;
     if (this.attrs.discussion.payload.included) {
       this.attrs.discussion.payload.included.forEach(function (item) {
@@ -153,6 +156,8 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
         }
       });
     }
+
+    // ----------------------------------------------------------
     if (isProductDiscussion) {
       items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
         value: this.rating,
