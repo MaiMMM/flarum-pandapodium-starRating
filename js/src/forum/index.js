@@ -16,21 +16,32 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
 
   extend(ReplyComposer.prototype, 'headerItems', function (items) {
 
-    // TO DO:
-    // THIS PART IS NOT WORKING, it needs to be replaced by some backend magic linked with extension settings
-    // ----------------------------------------------------------
-    let isProductDiscussion = false;
+    // Two restrictions fore rendering Stars components 
+    // 1. discussion has either tag (Product Discussion) or (Bike Shed)
+    // 2. author of the post has not rated the post yet
 
-    if(this.attrs.discussion.payload.included){
-      this.attrs.discussion.payload.included.forEach(item => {
-        if(item.attributes.name === 'Product Discussion'){
-          isProductDiscussion = true;
-        }
-      });
-    }
+    let isProductDiscussion = this.attrs.discussion.tags().some(tag => tag.slug() === 'product-discussion');
+    let isBikeShed = this.attrs.discussion.tags().some(tag => tag.slug() === 'bike-shed');
+
+    // if failed to meet the restrictions, return without next check
+    if(!isProductDiscussion && !isBikeShed) {return;}
+
+    const posts = this.attrs.discussion.posts();
+    const currentUserId = app.session.user.id();
+
+    // iterate throught posts, first make sure post isn't null or undefined,
+    // then check post.data.attributes.maimmm_rating isn't 0
+    // finally check post.data.relationships.user.data.id is equal to currentUserId
+    let hasRated = posts.some(post => post && post.data.attributes.maimmm_rating !== 0 && post.data.relationships.user.data.id === currentUserId);
+
+    // if user has rated, return without rendering Stars component
+    if(hasRated) {return;}
+
+    // if user hasn't rated, render Stars component
+
 
     // ----------------------------------------------------------
-    if(isProductDiscussion){   
+    // if(isProductDiscussion){   
 
       items.add('stars', Stars.component(
         {
@@ -41,7 +52,7 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
           editable:true,
         }
       ));
-    }
+    // }
   });
 
   // data

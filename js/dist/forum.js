@@ -145,28 +145,49 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
 
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_ReplyComposer__WEBPACK_IMPORTED_MODULE_5___default().prototype), 'headerItems', function (items) {
     var _this = this;
-    // TO DO:
-    // THIS PART IS NOT WORKING, it needs to be replaced by some backend magic linked with extension settings
-    // ----------------------------------------------------------
-    var isProductDiscussion = false;
-    if (this.attrs.discussion.payload.included) {
-      this.attrs.discussion.payload.included.forEach(function (item) {
-        if (item.attributes.name === 'Product Discussion') {
-          isProductDiscussion = true;
-        }
-      });
+    // Two restrictions fore rendering Stars components 
+    // 1. discussion has either tag (Product Discussion) or (Bike Shed)
+    // 2. author of the post has not rated the post yet
+
+    var isProductDiscussion = this.attrs.discussion.tags().some(function (tag) {
+      return tag.slug() === 'product-discussion';
+    });
+    var isBikeShed = this.attrs.discussion.tags().some(function (tag) {
+      return tag.slug() === 'bike-shed';
+    });
+
+    // if failed to meet the restrictions, return without next check
+    if (!isProductDiscussion && !isBikeShed) {
+      return;
+    }
+    var posts = this.attrs.discussion.posts();
+    var currentUserId = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().session.user.id();
+
+    // iterate throught posts, first make sure post isn't null or undefined,
+    // then check post.data.attributes.maimmm_rating isn't 0
+    // finally check post.data.relationships.user.data.id is equal to currentUserId
+    var hasRated = posts.some(function (post) {
+      return post && post.data.attributes.maimmm_rating !== 0 && post.data.relationships.user.data.id === currentUserId;
+    });
+
+    // if user has rated, return without rendering Stars component
+    if (hasRated) {
+      return;
     }
 
+    // if user hasn't rated, render Stars component
+
     // ----------------------------------------------------------
-    if (isProductDiscussion) {
-      items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
-        value: this.rating,
-        onchange: function onchange(value) {
-          _this.rating = value;
-        },
-        editable: true
-      }));
-    }
+    // if(isProductDiscussion){   
+
+    items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
+      value: this.rating,
+      onchange: function onchange(value) {
+        _this.rating = value;
+      },
+      editable: true
+    }));
+    // }
   });
 
   // data

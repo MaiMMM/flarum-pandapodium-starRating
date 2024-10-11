@@ -12,17 +12,8 @@
 namespace maimmm\starRating;
 
 use Flarum\Extend;
-use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Post\Post;
-use Flarum\Post\CommentPost;
-use Flarum\Api\Controller;
-use Flarum\Api\Serializer\BasicUserSerializer;
 use Flarum\Api\Serializer\PostSerializer;
-use Flarum\Api\Event\WillGetData;
-use Flarum\Api\Controller\ListDiscussionsController;
-// use Flarum\starRating\Api\LoadRatingRelationship;
-use Flarum\User\User;
-use Flarum\Post\Event\Deleted;
 use Flarum\Post\Event\Saving;
 // use Flarum\maimmm\starRating\Listener\SaveRatingToDataBase;
 
