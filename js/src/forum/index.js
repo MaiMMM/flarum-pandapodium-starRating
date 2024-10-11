@@ -33,16 +33,10 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
     // then check post.data.attributes.maimmm_rating isn't 0
     // finally check post.data.relationships.user.data.id is equal to currentUserId
     let hasRated = posts.some(post => post && post.data.attributes.maimmm_rating !== 0 && post.data.relationships.user.data.id === currentUserId);
-
     // if user has rated, return without rendering Stars component
     if(hasRated) {return;}
 
-    // if user hasn't rated, render Stars component
-
-
     // ----------------------------------------------------------
-    // if(isProductDiscussion){   
-
       items.add('stars', Stars.component(
         {
           value: this.rating,
@@ -79,7 +73,10 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
   // -------------------------------------------------------------------------
   // EDIT COMPOSER
   extend(EditPostComposer.prototype, 'headerItems', function(items) {
-      // let rating = this.attrs.post.data.attributes.maimmm_rating;
+      // do not render if no rating exists
+      if(this.attrs.post.data.attributes.maimmm_rating === 0){
+        return;
+      }
       
       items.add('stars', Stars.component(
         {

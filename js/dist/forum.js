@@ -58,11 +58,9 @@ var Stars = /*#__PURE__*/function (_Component) {
     return m('.Stars',
     // hoverToViewValueTooltip(optional): whether to show a tooltip when hovering over the stars to show the value
     m((flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_3___default()), {
-      text: this.attrs.hoverToViewValueTooltip ? this.attrs.value.toFixed(2) : '',
+      text: this.attrs.hoverToViewValueTooltip ? this.attrs.value.toFixed(2) : 'You can only rate once',
       position: 'bottom',
       onupdate: function onupdate(vnode) {
-        // console.log(vnode)
-
         // if the value of the stars has changed, recreate the tooltip
         vnode.state.shouldRecreateTooltip = true;
       }
@@ -71,7 +69,7 @@ var Stars = /*#__PURE__*/function (_Component) {
     // editable: whether the stars are clickable
     // size(optional): 'small' to make the stars smaller
     {
-      className: "\n                    " + (this.attrs.editable ? 'editable' : '') + "  \n                    " + (this.attrs.size === 'small' ? 'smallStar' : '')
+      className: "\n                        " + (this.attrs.editable ? 'editable' : '') + "  \n                        " + (this.attrs.size === 'small' ? 'smallStar' : '')
     }, [1, 2, 3, 4, 5].map(function (rating) {
       var stars = _this.attrs.value;
       var active = stars + 0.29 >= rating;
@@ -95,7 +93,9 @@ var Stars = /*#__PURE__*/function (_Component) {
           }
         }
       });
-    }))));
+    })))
+    // this.attrs.editable ? m('span', {className: 'rate-once-text'}, 'You can only rate once') : null
+    );
   };
   return Stars;
 }((flarum_Component__WEBPACK_IMPORTED_MODULE_1___default()));
@@ -169,17 +169,12 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
     var hasRated = posts.some(function (post) {
       return post && post.data.attributes.maimmm_rating !== 0 && post.data.relationships.user.data.id === currentUserId;
     });
-
     // if user has rated, return without rendering Stars component
     if (hasRated) {
       return;
     }
 
-    // if user hasn't rated, render Stars component
-
     // ----------------------------------------------------------
-    // if(isProductDiscussion){   
-
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
       value: this.rating,
       onchange: function onchange(value) {
@@ -212,8 +207,10 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
   // EDIT COMPOSER
   (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_EditPostComposer__WEBPACK_IMPORTED_MODULE_8___default().prototype), 'headerItems', function (items) {
     var _this2 = this;
-    // let rating = this.attrs.post.data.attributes.maimmm_rating;
-
+    // do not render if no rating exists
+    if (this.attrs.post.data.attributes.maimmm_rating === 0) {
+      return;
+    }
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
       // if this.rating exists set to this.rating, else set to rating to this.attrs.post.data.attributes.maimmm_rating
       value: this.rating ? this.rating : this.attrs.post.data.attributes.maimmm_rating,
