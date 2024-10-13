@@ -8,6 +8,7 @@ export default class Stars extends Component {
     oninit(vnode) {
         super.oninit(vnode);
         this.tooltip = null; // Initialize a reference for Tooltip
+        this.tooltipValue = this.attrs.value.toFixed(2) == 0 ? 'no rating' : this.attrs.value.toFixed(2);
     }
 
     view() {
@@ -15,7 +16,7 @@ export default class Stars extends Component {
             // hoverToViewValueTooltip(optional): whether to show a tooltip when hovering over the stars to show the value
             m(Tooltip, 
                 {
-                    text: this.attrs.hoverToViewValueTooltip ? this.attrs.value.toFixed(2) : 'You can only rate once',
+                    text: this.attrs.hoverToViewValueTooltip ? this.tooltipValue : 'You can only rate once',
                     position: 'bottom',
                     onupdate(vnode) {
                         // if the value of the stars has changed, recreate the tooltip
