@@ -8,6 +8,9 @@ export default class Stars extends Component {
     oninit(vnode) {
         super.oninit(vnode);
         this.tooltip = null; // Initialize a reference for Tooltip
+        if(!this.attrs.value){
+            this.attrs.value = 0;
+        }
         this.tooltipValue = this.attrs.value.toFixed(2) == 0 ? 'no rating' : this.attrs.value.toFixed(2);
     }
 

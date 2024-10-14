@@ -52,6 +52,9 @@ var Stars = /*#__PURE__*/function (_Component) {
   _proto.oninit = function oninit(vnode) {
     _Component.prototype.oninit.call(this, vnode);
     this.tooltip = null; // Initialize a reference for Tooltip
+    if (!this.attrs.value) {
+      this.attrs.value = 0;
+    }
     this.tooltipValue = this.attrs.value.toFixed(2) == 0 ? 'no rating' : this.attrs.value.toFixed(2);
   };
   _proto.view = function view() {
