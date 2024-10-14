@@ -52,13 +52,14 @@ var Stars = /*#__PURE__*/function (_Component) {
   _proto.oninit = function oninit(vnode) {
     _Component.prototype.oninit.call(this, vnode);
     this.tooltip = null; // Initialize a reference for Tooltip
+    this.tooltipValue = this.attrs.value.toFixed(2) == 0 ? 'no rating' : this.attrs.value.toFixed(2);
   };
   _proto.view = function view() {
     var _this = this;
     return m('.Stars',
     // hoverToViewValueTooltip(optional): whether to show a tooltip when hovering over the stars to show the value
     m((flarum_common_components_Tooltip__WEBPACK_IMPORTED_MODULE_3___default()), {
-      text: this.attrs.hoverToViewValueTooltip ? this.attrs.value.toFixed(2) : 'You can only rate once',
+      text: this.attrs.hoverToViewValueTooltip ? this.tooltipValue : 'You can only rate once',
       position: 'bottom',
       onupdate: function onupdate(vnode) {
         // if the value of the stars has changed, recreate the tooltip
