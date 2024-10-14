@@ -21,7 +21,9 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
     // 2. author of the post has not rated the post yet
 
     let isProductDiscussion = this.attrs.discussion.tags().some(tag => tag.slug() === 'product-discussion');
-    let isBikeShed = this.attrs.discussion.tags().some(tag => tag.slug() === 'bike-shed');
+    let isBikeShed = this.attrs.discussion.tags().some(tag => tag.data.attributes.name === 'Bike Shed');
+    console.log(this.attrs.discussion.tags())
+    console.log(isProductDiscussion, isBikeShed)
 
     // if failed to meet the restrictions, return without next check
     if(!isProductDiscussion && !isBikeShed) {return;}
@@ -35,7 +37,7 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
     let hasRated = posts.some(post => post && post.data.attributes.maimmm_rating !== 0 && post.data.relationships.user.data.id === currentUserId);
     // if user has rated, return without rendering Stars component
     if(hasRated) {return;}
-
+    this.rating = 0;
     // ----------------------------------------------------------
       items.add('stars', Stars.component(
         {
