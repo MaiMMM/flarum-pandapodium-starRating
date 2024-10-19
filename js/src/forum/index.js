@@ -24,7 +24,7 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
     let isBikeShed = this.attrs.discussion.tags().some(tag => tag.slug() === 'bike-shed');
 
     // if failed to meet the restrictions, return without next check
-    if(!isProductDiscussion && !isBikeShed) {return;}
+    if(!isProductDiscussion) {return;}
 
     const posts = this.attrs.discussion.posts();
     const currentUserId = app.session.user.id();
@@ -101,7 +101,13 @@ app.initializers.add('maimmm/flarum-ext-starrating', () => {
 // -------------------------------------------------------------------------
 // HEADER
 extend(DiscussionHero.prototype, 'items', function (items) {
-  // console.log(this)
+  // if discussion has either tag (Product Discussion) or (Bike Shed)
+  let isProductDiscussion = this.attrs.discussion.tags().some(tag => tag.slug() === 'product-discussion');
+  let isBikeShed = this.attrs.discussion.tags().some(tag => tag.slug() === 'bike-shed');
+
+  // if failed to meet the restrictions, return without next check
+  if(!isProductDiscussion) {return;}
+  
   let rating = 0;
   const posts = app.store.all('posts').filter(post => post.discussion() === this.attrs.discussion);
 
@@ -115,7 +121,6 @@ extend(DiscussionHero.prototype, 'items', function (items) {
   });
   rating = rating / (posts.length - numOfZeroStarPost);
 
-  // console.log(rating)
   if (rating) {
       items.add('stars', 
       Stars.component({

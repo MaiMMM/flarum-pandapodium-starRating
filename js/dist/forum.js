@@ -161,7 +161,7 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
     });
 
     // if failed to meet the restrictions, return without next check
-    if (!isProductDiscussion && !isBikeShed) {
+    if (!isProductDiscussion) {
       return;
     }
     var posts = this.attrs.discussion.posts();
@@ -233,7 +233,18 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
 // HEADER
 (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_DiscussionHero__WEBPACK_IMPORTED_MODULE_7___default().prototype), 'items', function (items) {
   var _this3 = this;
-  // console.log(this)
+  // if discussion has either tag (Product Discussion) or (Bike Shed)
+  var isProductDiscussion = this.attrs.discussion.tags().some(function (tag) {
+    return tag.slug() === 'product-discussion';
+  });
+  var isBikeShed = this.attrs.discussion.tags().some(function (tag) {
+    return tag.slug() === 'bike-shed';
+  });
+
+  // if failed to meet the restrictions, return without next check
+  if (!isProductDiscussion) {
+    return;
+  }
   var rating = 0;
   var posts = flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().store.all('posts').filter(function (post) {
     return post.discussion() === _this3.attrs.discussion;
@@ -247,8 +258,6 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('maimmm
     rating += post.data.attributes.maimmm_rating;
   });
   rating = rating / (posts.length - numOfZeroStarPost);
-
-  // console.log(rating)
   if (rating) {
     items.add('stars', _components_Stars__WEBPACK_IMPORTED_MODULE_4__["default"].component({
       value: rating,
